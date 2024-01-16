@@ -1,3 +1,4 @@
+import username_password from "../utils/constants.js";
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -10,8 +11,11 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+var mongodb_url =
+  "mongodb+srv://" + username_password + "@cluster0.u3rcjix.mongodb.net/";
+
 mongoose
-  .connect("mongodb+srv://trackmyday:trackmyday@cluster0.u3rcjix.mongodb.net/")
+  .connect(mongodb_url)
   .then(() => {
     console.log("Connected to MongoDB");
   })
