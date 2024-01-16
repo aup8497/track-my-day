@@ -1,61 +1,106 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, SafeAreaView } from "react-native";
 import React from "react";
-import { Redirect } from "expo-router";
-import { NavigationContainer } from "@react-navigation/native";
+// import { Redirect } from "expo-router";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { create } from "../screens/create.js";
-import Ionicons from "@expo/vector-icons/Ionicons.js";
-import styled from "styled-components";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { SettingsScreen, HomeScreen } from "../screens/Feed.js";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Home!</Text>
-    </View>
-  );
-}
-
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
+const myIcon = <Icon name="plus" size={30} color="#900" />;
 
 const Tab = createBottomTabNavigator();
 
 export const TabNavigator = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="home" component={HomeScreen} />
-      <Tab.Screen name="Shop" component={SettingsScreen} />
-      <Tab.Screen
-        name="Add"
-        options={{
-          tabBarLabel: "",
-          tabBarIcon: ({ color }) => (
-            <View
-              style={{
-                position: "relative",
-                bottom: 0, // space from bottombar
-                height: 68,
-                width: 68,
-                borderRadius: 68,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Ionicons name="add-circle-outline" color="grey" size={68} />
-            </View>
-          ),
+    <NavigationContainer independent={true}>
+      <Tab.Navigator
+        initialRouteName="Feed"
+        screenOptions={{
+          tabBarActiveTintColor: "#e91e63",
+          tabBarStyle: "relative",
+          headerShown: false,
+          tabBarStyle: { height: 100 },
         }}
-        component={SettingsScreen}
-      />
-      <Tab.Screen name="Favorite" component={SettingsScreen} />
-      <Tab.Screen name="random" component={SettingsScreen} />
-    </Tab.Navigator>
+      >
+        <Tab.Screen
+          options={{
+            tabBarLabel: "",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="equal-box"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+          name="Feed"
+          component={HomeScreen}
+        />
+        <Tab.Screen
+          name="Calendar"
+          component={HomeScreen}
+          options={{
+            tabBarLabel: "",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="calendar-month-outline"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Add"
+          options={{
+            tabBarLabel: "",
+            tabBarIcon: ({ color }) => (
+              <SafeAreaView style={styles.createButton}>{myIcon}</SafeAreaView>
+            ),
+          }}
+          component={SettingsScreen}
+        />
+        <Tab.Screen
+          name="Overview"
+          component={SettingsScreen}
+          options={{
+            tabBarLabel: "",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="google-analytics"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={SettingsScreen}
+          options={{
+            tabBarLabel: "",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="account-outline"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  createButton: {
+    height: 68,
+    width: 68,
+    borderRadius: 68,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "grey",
+  },
+});
